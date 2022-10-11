@@ -9,6 +9,7 @@ if (file_path[0]):
         data = list(csv.reader(csvfile, delimiter='\t'))
 
     for x in data:
+        #clear unneeded columns
         x.pop(0)
         x.pop(1)
         x.pop(1)
@@ -19,11 +20,11 @@ if (file_path[0]):
         x.pop(1)
         x.pop(1)
         x.pop(1)
-
-    for x in data:
+        
+        #convert reading to hiragana
         x[1] = jaconv.kata2hira(x[1])
 
-    for x in data:
+        #remove readings from the example sentence except for the target word
         temp = ""
         bool = 0
         for c in x[2]:
@@ -41,12 +42,12 @@ if (file_path[0]):
                 if (c == "<"):
                     bool = 1
                 temp += c
-        
         x[2] = temp
         x[2] = re.sub("\[.*?\]", "", x[2])
         x[2] = re.sub("{", "[", x[2])
         x[2] = re.sub("}", "]", x[2])
 
+    #write to file
     f = open(output_path, "w")
     for x in data:
         f.write(x[0] + "[" + x[1] + "]," + x[2] + "\n")
